@@ -1,0 +1,17 @@
+clave,fecha,factura_id,usuario_registro,total_factura,total_notas,motivo,importe
+NC01-00096,2025-05-30,F001-003721,FACT04,8007.92,13894.9,Las notas de crédito superan el total de la factura,13894.9
+NC01-00013,2025-02-03,F001-000724,FACT01,3580.48,5341.29,Las notas de crédito superan el total de la factura,5341.29
+NC01-00235,2025-12-10,F001-001608,FACT04,2869.24,4491.13,Las notas de crédito superan el total de la factura,4491.13
+NC01-00247,2025-12-17,F002-001355,FACT02,1217.54,2044.82,Las notas de crédito superan el total de la factura,2044.82
+NC01-00249,2025-12-19,F001-969475,FACT03,,1964.19,La factura no existe,1964.19
+NC01-00066,2025-04-24,F001-905010,FACT04,,1833.69,La factura no existe,1833.69
+NC01-00217,2025-11-22,F001-927511,FACT04,,1674.65,La factura no existe,1674.65
+NC01-00003,2025-01-15,F001-981258,FACT03,,1434.5,La factura no existe,1434.5
+NC01-00101,2025-06-09,F001-003576,FACT07,2538.72,1269.36,La factura está anulada,1269.36
+NC01-00251,2025-12-22,F001-920809,FACT03,,709.71,La factura no existe,709.71
+NC01-00075,2025-04-29,F001-003370,FACT08,557.71,699.05,Las notas de crédito superan el total de la factura,699.05
+NC01-00176,2025-09-24,F002-000885,FACT03,1390.26,695.13,La factura está anulada,695.13
+NC01-00169,2025-09-11,F001-000126,FACT01,907.12,453.56,La factura está anulada,453.56
+NC01-00099,2025-06-02,F002-001083,FACT01,,448.54,La factura no existe,448.54
+NC01-00172,2025-09-18,F001-005669,FACT06,473.46,236.73,La factura está anulada,236.73
+NC01-00046,2025-03-25,F001-005231,FACT02,221.41,110.7,La factura está anulada,110.7

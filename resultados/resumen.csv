@@ -1,0 +1,11 @@
+prueba,titulo,excepciones,importe
+P01,Integridad de totales,10,4465.26
+P02,Correlativos faltantes,18,0.0
+P03,Posibles facturas duplicadas,33,73993.54
+P04,Ventas por debajo del costo,41,4877.43
+P05,Descuentos fuera de política,80,6721.02
+P06,Segregación de funciones,35,47523.06
+P07,Anulaciones tardías,20,46247.36
+P08,Notas de crédito sin sustento,16,37301.95
+P09,Facturación fuera de horario,45,119226.69
+P10,Fraccionamiento bajo el umbral de aprobación,47,680043.29
