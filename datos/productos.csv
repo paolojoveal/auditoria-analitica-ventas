@@ -1,0 +1,121 @@
+sku,categoria,costo_unitario,precio_lista
+P001,Snacks,4.75,7.3
+P002,Cuidado personal,18.28,26.96
+P003,Abarrotes,13.03,19.03
+P004,Abarrotes,9.14,13.36
+P005,Snacks,4.16,6.36
+P006,Bebidas,28.49,38.15
+P007,Snacks,11.41,17.2
+P008,Snacks,21.13,33.78
+P009,Cuidado personal,27.42,40.73
+P010,Lácteos,21.45,34.04
+P011,Cuidado personal,15.98,22.06
+P012,Limpieza,26.73,35.67
+P013,Abarrotes,24.59,32.63
+P014,Cuidado personal,25.78,38.21
+P015,Lácteos,6.68,9.35
+P016,Cuidado personal,14.22,19.61
+P017,Cuidado personal,11.99,18.62
+P018,Limpieza,104.79,139.67
+P019,Lácteos,12.08,16.19
+P020,Cuidado personal,38.28,49.95
+P021,Abarrotes,6.56,9.36
+P022,Cuidado personal,14.16,19.76
+P023,Limpieza,7.62,11.51
+P024,Bebidas,20.21,26.46
+P025,Lácteos,53.43,82.65
+P026,Abarrotes,10.54,16.85
+P027,Cuidado personal,28.91,42.82
+P028,Limpieza,28.65,42.16
+P029,Abarrotes,26.43,41.52
+P030,Bebidas,15.71,20.74
+P031,Abarrotes,16.4,24.83
+P032,Cuidado personal,19.53,30.77
+P033,Lácteos,20.38,27.26
+P034,Bebidas,19.77,30.34
+P035,Bebidas,28.73,40.36
+P036,Lácteos,16.69,22.52
+P037,Limpieza,24.99,33.0
+P038,Bebidas,21.61,34.43
+P039,Bebidas,9.18,14.22
+P040,Cuidado personal,10.39,15.82
+P041,Snacks,25.3,37.47
+P042,Limpieza,24.07,33.34
+P043,Limpieza,34.46,49.65
+P044,Abarrotes,4.71,6.33
+P045,Lácteos,26.01,34.16
+P046,Lácteos,4.23,6.42
+P047,Bebidas,17.4,25.1
+P048,Limpieza,4.06,6.39
+P049,Limpieza,40.42,54.84
+P050,Limpieza,10.75,15.66
+P051,Cuidado personal,66.36,99.73
+P052,Abarrotes,20.42,28.8
+P053,Snacks,29.85,42.47
+P054,Cuidado personal,25.39,40.61
+P055,Abarrotes,52.93,71.65
+P056,Lácteos,17.68,24.4
+P057,Abarrotes,9.07,13.55
+P058,Lácteos,8.84,13.48
+P059,Abarrotes,10.38,15.56
+P060,Bebidas,18.58,26.79
+P061,Snacks,22.21,29.78
+P062,Snacks,15.41,20.07
+P063,Limpieza,19.76,26.01
+P064,Snacks,45.7,72.55
+P065,Abarrotes,6.23,8.18
+P066,Cuidado personal,12.93,17.65
+P067,Limpieza,33.32,46.94
+P068,Snacks,9.49,13.18
+P069,Snacks,33.55,44.27
+P070,Abarrotes,13.95,21.85
+P071,Cuidado personal,12.67,18.33
+P072,Bebidas,16.03,25.35
+P073,Snacks,19.97,28.73
+P074,Snacks,14.67,21.15
+P075,Abarrotes,44.8,68.68
+P076,Limpieza,14.5,19.3
+P077,Cuidado personal,36.91,55.68
+P078,Snacks,34.82,49.79
+P079,Lácteos,15.95,21.78
+P080,Limpieza,41.62,61.83
+P081,Bebidas,54.53,78.77
+P082,Bebidas,26.73,37.56
+P083,Limpieza,30.71,48.22
+P084,Cuidado personal,6.36,9.51
+P085,Limpieza,25.95,37.73
+P086,Bebidas,35.5,56.3
+P087,Limpieza,55.0,82.49
+P088,Abarrotes,13.99,18.25
+P089,Bebidas,20.82,32.08
+P090,Bebidas,37.73,57.45
+P091,Cuidado personal,12.1,18.04
+P092,Lácteos,26.86,39.34
+P093,Limpieza,3.16,4.57
+P094,Cuidado personal,26.25,38.15
+P095,Lácteos,6.85,10.81
+P096,Lácteos,6.71,9.34
+P097,Lácteos,14.92,21.99
+P098,Bebidas,13.38,17.56
+P099,Bebidas,17.99,26.4
+P100,Limpieza,3.95,5.3
+P101,Bebidas,9.43,12.59
+P102,Bebidas,53.86,73.36
+P103,Lácteos,17.96,25.8
+P104,Snacks,9.52,14.75
+P105,Limpieza,27.67,36.63
+P106,Bebidas,15.66,20.56
+P107,Bebidas,28.87,37.59
+P108,Abarrotes,14.65,19.7
+P109,Limpieza,56.5,81.59
+P110,Snacks,20.25,31.19
+P111,Limpieza,22.2,35.47
+P112,Limpieza,6.04,8.89
+P113,Lácteos,10.2,15.37
+P114,Bebidas,33.79,46.63
+P115,Lácteos,10.83,15.38
+P116,Limpieza,31.88,43.92
+P117,Limpieza,6.34,9.29
+P118,Limpieza,16.73,25.49
+P119,Cuidado personal,30.03,40.08
+P120,Bebidas,18.99,27.75
