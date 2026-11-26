@@ -88,8 +88,6 @@ Las cinco primeras excepciones:
 - **Resultado:** 41 excepciones por S/ 4,877.
 - **Seguimiento:** Validar el costo vigente a la fecha de venta y la autorización del precio. El importe es la pérdida frente al costo.
 
-**Concentración.** FACT04 y FACT05 acumulan 21 de las 41 excepciones (51%).
-
 Las cinco primeras excepciones:
 
 | clave | fecha | cliente_id | usuario_registro | sku | cantidad | precio_unitario | descuento_pct | precio_neto | costo_unitario | importe |
@@ -146,8 +144,6 @@ Las cinco primeras excepciones:
 - **Resultado:** 20 excepciones por S/ 46,247.
 - **Seguimiento:** Verificar si la venta contó para comisiones o metas del mes de emisión y quién pidió la anulación.
 
-**Concentración.** SUP03 y SUP01 acumulan 14 de las 20 excepciones (70%).
-
 Las cinco primeras excepciones:
 
 | clave | fecha | fecha_anulacion | dias_hasta_la_anulacion | vendedor_id | usuario_anulacion | importe |
@@ -166,8 +162,6 @@ Las cinco primeras excepciones:
 - **Resultado:** 16 excepciones por S/ 37,302.
 - **Seguimiento:** Pedir el sustento (devolución física, reclamo) y confirmar el saldo con el cliente.
 - **Por tipo:** La factura no existe: 6; Las notas de crédito superan el total de la factura: 5; La factura está anulada: 5.
-
-**Concentración.** FACT04 y FACT03 acumulan 8 de las 16 excepciones (50%).
 
 Las cinco primeras excepciones:
 
@@ -188,7 +182,7 @@ Las cinco primeras excepciones:
 - **Seguimiento:** Revisar la concentración por usuario y contrastar con el registro de accesos al sistema.
 - **Por tipo:** Fuera de 08:00 a 20:00: 30; Domingo: 15.
 
-**Concentración.** FACT07 y FACT03 acumulan 34 de las 45 excepciones (76%).
+**Concentración.** FACT07, 20 excepciones cuando se esperaban 5.5; FACT03, 14 excepciones cuando se esperaban 5.7. La diferencia supera lo que explica el azar.
 
 Las cinco primeras excepciones:
 
@@ -217,6 +211,21 @@ Las cinco primeras excepciones:
 | C0190|2025-11-07 | C0190 | 2025-11-07 | 3 | 9359.91 | F001-005034, F001-005038, F001-005040 | FACT01,FACT07 | 19,634.55 |
 | C0034|2025-06-05 | C0034 | 2025-06-05 | 3 | 9576.9 | F001-002454, F001-002465, F001-002467 | FACT05,FACT03 | 19,246.16 |
 | C0048|2025-12-01 | C0048 | 2025-12-01 | 3 | 8545.9 | F001-005389, F001-005390, F001-005393 | FACT02,FACT04 | 18,740.40 |
+
+## Concentración por usuario
+
+Para cada prueba y cada usuario se compara el número de excepciones con el que le tocaría si las excepciones se repartieran como el trabajo (prueba hipergeométrica de una cola). Los valores p se corrigen con el procedimiento de Benjamini-Hochberg, porque se hacen muchas comparaciones a la vez.
+
+- **Comparaciones:** 58.
+- **Con p ≤ 0.05 sin corregir:** 4.
+- **Señales tras la corrección:** 2.
+
+| Prueba | Usuario | Operación | Operaciones | Excepciones | Esperadas | Observadas / esperadas | Valor p | Valor q |
+|---|---|---|---|---|---|---|---|---|
+| P09 | FACT07 | facturas | 1,117 | 20 | 5.5 | 3.6 | < 0.0001 | < 0.0001 |
+| P09 | FACT03 | facturas | 1,142 | 14 | 5.7 | 2.5 | 0.0009 | 0.0248 |
+
+Una señal indica a quién preguntar primero. No prueba una irregularidad: puede haber una razón operativa, como un turno o una zona asignada.
 
 ## Análisis de Benford
 

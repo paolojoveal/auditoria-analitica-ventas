@@ -4,8 +4,9 @@
     2. Concilia la población: número de facturas e importe facturado, emitido y anulado.
     3. Corre las diez pruebas de `pruebas.sql` sobre el 100% de las transacciones.
     4. Aplica la ley de Benford al primer dígito de los importes.
-    5. Compara las excepciones con las irregularidades sembradas en los datos sintéticos.
-    6. Escribe el informe, los papeles de trabajo en Excel y las figuras en `resultados/`.
+    5. Busca usuarios que concentren excepciones más de lo que explica el azar.
+    6. Compara las excepciones con las irregularidades sembradas en los datos sintéticos.
+    7. Escribe el informe, los papeles de trabajo en Excel y las figuras en `resultados/`.
 
     python -m auditoria.ejecutar                # usa datos/ (los genera si no existen)
     python -m auditoria.ejecutar --semilla 7 --datos otra/datos --salida otra/resultados   # otra empresa sintética
@@ -21,7 +22,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from . import generar_datos
+from . import concentracion, generar_datos
 
 RAIZ = Path(__file__).resolve().parents[1]
 RESULTADOS = RAIZ / "resultados"
@@ -145,6 +146,7 @@ def main() -> None:
     emitidas = tablas["facturas"].loc[tablas["facturas"]["estado"] == "EMITIDA", "total"]
     tabla_benford, chi2, mad = benford(emitidas)
     evaluacion = evaluar(excepciones, tablas["_verdad"]) if "_verdad" in tablas else None
+    por_usuario = concentracion.analizar(tablas, excepciones)
 
     pd.set_option("display.width", 200)
     print(f"Población: {pob['facturas']:,} facturas del {pob['desde']} al {pob['hasta']}; "
@@ -153,12 +155,20 @@ def main() -> None:
     print(resumen.to_string(formatters={"importe": "{:,.0f}".format}))
     print(f"\nBenford (primer dígito de {len(emitidas):,} facturas): chi-cuadrado = {chi2:.1f} "
           f"(crítico al 5%: {CHI2_CRITICO_5}); MAD = {mad:.4f}")
+    senales = concentracion.senales(por_usuario)
+    print(f"\nConcentración por usuario: {len(por_usuario)} comparaciones; {int((por_usuario['p'] <= 0.05).sum())} con "
+          f"p <= 0.05 sin corregir y {len(senales)} señales tras corregir por comparaciones múltiples.")
+    if len(senales):
+        print(senales[["prueba", "usuario", "operaciones", "excepciones", "esperadas", "razon", "p", "q"]].to_string(
+            index=False, formatters={"esperadas": "{:.1f}".format, "razon": "{:.1f}".format,
+                                     "p": concentracion.formato_p, "q": concentracion.formato_p}))
     if evaluacion is not None:
         print("\nContraste con las irregularidades sembradas:")
         print(evaluacion.to_string(formatters={"sensibilidad": "{:.0%}".format, "precision": "{:.0%}".format}))
 
     from . import informe
-    informe.escribir_todo(args.salida, pruebas, pob, excepciones, resumen, evaluacion, tabla_benford, chi2, mad)
+    informe.escribir_todo(args.salida, pruebas, pob, excepciones, resumen, evaluacion, tabla_benford, chi2, mad,
+                          por_usuario)
     print(f"\nInforme, papeles de trabajo y figuras en {args.salida}/")
 
 

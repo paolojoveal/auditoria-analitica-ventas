@@ -8,7 +8,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from auditoria import ejecutar, generar_datos  # noqa: E402
+from auditoria import concentracion, ejecutar, generar_datos  # noqa: E402
 
 SIN_FALSAS_ALARMAS = ["P01", "P02", "P05", "P06", "P07", "P09"]      # pruebas que no admiten una explicación legítima
 
@@ -111,3 +111,40 @@ def test_benford():
     assert mad < 0.006 and chi2 < ejecutar.CHI2_CRITICO_1
     uniforme = pd.Series(rng.uniform(100, 999, 20_000))               # primer dígito uniforme: no cumple
     assert ejecutar.benford(uniforme)[2] > 0.015
+
+
+# ---------- concentración por usuario ----------
+def test_benjamini_hochberg_con_respuesta_conocida():
+    assert concentracion.benjamini_hochberg([0.01, 0.04, 0.03, 0.005]) == pytest.approx([0.02, 0.04, 0.04, 0.02])
+    p = np.random.default_rng(1).uniform(size=50)
+    q = concentracion.benjamini_hochberg(p)
+    assert (q >= p).all() and (q <= 1).all()
+    assert (np.diff(q[np.argsort(p)]) >= 0).all()                     # a menor p, menor q
+
+
+def test_el_valor_p_es_la_cola_hipergeometrica():
+    """Diez facturas, cuatro con excepción, las cuatro del mismo usuario: P(X >= 4) = 5/210."""
+    facturas = pd.DataFrame({"factura_id": [f"F{i}" for i in range(10)], "usuario_registro": ["A"] * 5 + ["B"] * 5,
+                             "estado": "EMITIDA", "usuario_anulacion": None})
+    tablas = {"facturas": facturas, "factura_detalle": pd.DataFrame({"factura_id": facturas["factura_id"]}),
+              "notas_credito": pd.DataFrame({"usuario_registro": []})}
+    tabla = concentracion.analizar(tablas, {"P01": facturas.head(4)}).set_index("usuario")
+    assert tabla.at["A", "p"] == pytest.approx(5 / 210)
+    assert tabla.at["B", "p"] == pytest.approx(1.0)
+    assert tabla["esperadas"].tolist() == [2.0, 2.0]
+
+
+def test_la_concentracion_encuentra_lo_sembrado_y_nada_mas(empresa):
+    """El generador concentra la facturación nocturna en FACT03 y FACT07 y reparte lo demás al azar."""
+    tablas, excepciones = empresa
+    tabla = concentracion.analizar(tablas, excepciones)
+    senales = concentracion.senales(tabla)
+    assert set(zip(senales["prueba"], senales["usuario"])) == {("P09", "FACT03"), ("P09", "FACT07")}
+    assert (tabla["p"] <= 0.05).sum() > len(senales)                  # sin corregir habría señales falsas
+    for _, grupo in tabla.groupby("prueba"):                          # las esperadas reparten todas las excepciones
+        assert grupo["esperadas"].sum() == pytest.approx(grupo["excepciones"].sum())
+
+
+def test_una_empresa_limpia_no_da_senales_de_concentracion():
+    tablas = generar_datos.generar(sembrar=False)
+    assert concentracion.senales(concentracion.analizar(tablas, auditar(tablas))).empty

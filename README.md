@@ -6,7 +6,9 @@
 
 **¿Qué puede decir un auditor interno sobre el 100% de las ventas de un año antes de pedir un solo documento?**
 
-Diez pruebas de auditoría en SQL sobre el ciclo de ventas de una distribuidora ficticia: 9 095 facturas, 18 477 líneas de detalle y 265 notas de crédito. El proyecto genera los datos, corre las pruebas sobre toda la población (sin muestreo), cuantifica las excepciones y produce lo que entregaría un equipo de auditoría: un informe, papeles de trabajo en Excel y el detalle de cada excepción.
+Diez pruebas de auditoría en SQL sobre el ciclo de ventas de una distribuidora ficticia: 9 095 facturas, 18 477 líneas de detalle y 265 notas de crédito. El proyecto genera los datos, corre las pruebas sobre toda la población (sin muestreo), cuantifica las excepciones, busca qué usuarios las concentran y produce lo que entregaría un equipo de auditoría: un informe, papeles de trabajo en Excel y el detalle de cada excepción.
+
+Cuando revisar el 100% no es posible, queda el muestreo: está en [muestreo-auditoria](https://github.com/paolojoveal/muestreo-auditoria).
 
 ![Excepciones por prueba](resultados/excepciones.png)
 
@@ -29,7 +31,7 @@ Cada prueba es una consulta en [`auditoria/pruebas.sql`](auditoria/pruebas.sql) 
 
 ## Lo que entrega
 
-- **[Informe](resultados/informe.md):** resumen, resultado de cada prueba con sus cinco primeras excepciones y análisis de Benford.
+- **[Informe](resultados/informe.md):** resumen, resultado de cada prueba con sus cinco primeras excepciones, concentración por usuario y análisis de Benford.
 - **[Papeles de trabajo](resultados/papeles_de_trabajo.xlsx):** un libro de Excel con un índice enlazado y una hoja por prueba, con la ficha y todas las excepciones, listas para filtrar.
 - **[Excepciones](resultados/excepciones):** un CSV por prueba, con la clave de cada registro para el seguimiento.
 
@@ -52,7 +54,18 @@ Cuatro lecturas:
 3. **Afinar una prueba tiene un costo.** Si P10 exigiera que el mismo usuario registre todas las facturas del día, las falsas alarmas bajarían de 17 a 1, pero se escaparían 7 de los 30 casos sembrados.
 4. **Las pruebas se explican entre sí.** Las dos excepciones «no sembradas» de P04 y P08 son reales. La de P04 es una venta bajo el costo causada por un descuento de 25%, fuera de política. La de P08 es una nota de crédito que referencia la factura F002-001083, uno de los 18 correlativos faltantes de P02: evidencia de que ese número sí se emitió y después se eliminó.
 
-En P09, dos usuarios concentran 34 de las 45 facturas fuera de horario (76%). Ese es el tipo de patrón que orienta el seguimiento.
+## ¿A quién preguntar primero?
+
+Las excepciones dicen qué registros revisar. No dicen si detrás hay una persona. Para cada prueba y cada usuario, [`auditoria/concentracion.py`](auditoria/concentracion.py) compara sus excepciones con las que le tocarían si se repartieran como el trabajo (prueba hipergeométrica de una cola).
+
+![Concentración de excepciones por usuario](resultados/concentracion.png)
+
+- **Dos señales.** FACT07 registró 20 facturas fuera de horario cuando se esperaban 5.5, y FACT03, 14 cuando se esperaban 5.7.
+- **Y dos que no lo son.** Sin corregir, cuatro de las 58 comparaciones salen «significativas» al 5%. Es lo esperable: con 58 comparaciones, el azar solo produce casi tres. FACT04 tiene 12 ventas bajo el costo cuando se esperaban 5.3 (p = 0.005), pero no sobrevive a la corrección de Benjamini-Hochberg. Perseguir cada p < 0.05 llevaría a interrogar a quien no hizo nada distinto de los demás.
+- **Coincide con lo sembrado.** El generador concentra la facturación nocturna en esos dos usuarios y reparte todo lo demás al azar. El análisis encontró lo que había y nada más.
+- **No siempre lo encuentra todo.** En otras tres empresas sintéticas señaló a los dos usuarios en dos casos y a uno solo en el tercero.
+
+Una señal indica a quién preguntar primero. No prueba una irregularidad: puede haber una razón operativa, como un turno de noche asignado.
 
 ## Ley de Benford
 
@@ -102,6 +115,7 @@ Las pruebas de auditoría también se prueban ([`tests/`](tests)):
 - El detalle concilia con la cabecera, no hay líneas huérfanas y los totales de la población coinciden con los datos.
 - Si se elimina una factura a mano, P02 devuelve exactamente ese número.
 - Benford acepta una muestra que cumple la ley y rechaza una con dígitos uniformes.
+- El análisis por usuario señala a los dos usuarios en los que el generador concentra el patrón y a ninguno en una empresa limpia. Su valor p coincide con un caso calculado a mano.
 
 GitHub Actions corre todo en cada cambio, incluida una auditoría completa sobre una empresa distinta.
 
@@ -111,6 +125,7 @@ GitHub Actions corre todo en cada cambio, incluida una auditoría completa sobre
 auditoria/generar_datos.py   Empresa sintética y registro de lo sembrado
 auditoria/pruebas.sql        Las diez pruebas, cada una con su ficha
 auditoria/ejecutar.py        Carga en SQLite, corre las pruebas, Benford y contraste
+auditoria/concentracion.py   Usuarios que concentran excepciones, con corrección por comparaciones múltiples
 auditoria/informe.py         Informe, papeles de trabajo en Excel y figuras
 datos/                       Tablas en CSV (y _verdad.csv, que una auditoría real no tiene)
 resultados/                  Informe, papeles de trabajo, figuras y excepciones
@@ -125,17 +140,19 @@ Las políticas contra las que se audita (límites de descuento, umbral de aproba
 - **Las pruebas verifican atributos de los registros.** No reemplazan la confirmación con clientes, la revisión de documentos ni el recorrido del proceso con sus responsables.
 - **El importe expuesto no es una pérdida.** Su significado cambia con la prueba (la pérdida frente al costo en P04, el total de la factura en P09) y por eso los importes no se suman entre pruebas.
 - Un correlativo faltante al final de una serie no es detectable: no hay un número posterior que lo delate.
+- **El análisis por usuario supone que, sin irregularidades, las excepciones se reparten en proporción al trabajo de cada uno.** Si los usuarios atienden clientes o turnos distintos, el supuesto falla y una señal puede tener una explicación operativa.
 - Causa, efecto y recomendación salen del seguimiento de cada excepción, no de la consulta. El informe no los inventa.
 
 ## Referencias
 
+- Benjamini, Y. y Hochberg, Y. (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society: Series B*, 57(1).
 - Committee of Sponsoring Organizations of the Treadway Commission (2013). *Internal Control: Integrated Framework*.
 - The Institute of Internal Auditors (2024). *Global Internal Audit Standards*.
 - Nigrini, M. (2012). *Benford's Law: Applications for Forensic Accounting, Auditing, and Fraud Detection*. Wiley.
 
 ## Sobre mí
 
-**Paolo Jove** · Estudiante de 8.º semestre (por iniciar el 9.º) en la **Pontificia Universidad Católica del Perú (PUCP)**. Más proyectos en [portafolio-finanzas](https://github.com/paolojoveal/portafolio-finanzas).
+**Paolo Jove** · Estudiante de 8.º semestre (por iniciar el 9.º) en la **Pontificia Universidad Católica del Perú (PUCP)**. Más proyectos en [muestreo-auditoria](https://github.com/paolojoveal/muestreo-auditoria), [portafolio-finanzas](https://github.com/paolojoveal/portafolio-finanzas) y [proyecciones-locales](https://github.com/paolojoveal/proyecciones-locales).
 
 [LinkedIn](https://www.linkedin.com/in/paolo-jove-085647127)
 
