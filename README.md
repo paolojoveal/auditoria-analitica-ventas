@@ -3,6 +3,7 @@
 [![Pruebas](https://github.com/paolojoveal/auditoria-analitica-ventas/actions/workflows/pruebas.yml/badge.svg)](https://github.com/paolojoveal/auditoria-analitica-ventas/actions/workflows/pruebas.yml)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-2a78d6)
 ![SQL](https://img.shields.io/badge/SQL-SQLite-2a78d6)
+
 **¿Qué puede decir un auditor interno sobre el 100% de las ventas de un año antes de pedir un solo documento?**
 
 Diez pruebas de auditoría en SQL sobre el ciclo de ventas de una distribuidora ficticia: 9 095 facturas, 18 477 líneas de detalle y 265 notas de crédito. El proyecto genera los datos, corre las pruebas sobre toda la población (sin muestreo), cuantifica las excepciones y produce lo que entregaría un equipo de auditoría: un informe, papeles de trabajo en Excel y el detalle de cada excepción.
