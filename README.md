@@ -3,8 +3,6 @@
 [![Pruebas](https://github.com/paolojoveal/auditoria-analitica-ventas/actions/workflows/pruebas.yml/badge.svg)](https://github.com/paolojoveal/auditoria-analitica-ventas/actions/workflows/pruebas.yml)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-2a78d6)
 ![SQL](https://img.shields.io/badge/SQL-SQLite-2a78d6)
-![Licencia MIT](https://img.shields.io/badge/licencia-MIT-52514e)
-
 **¿Qué puede decir un auditor interno sobre el 100% de las ventas de un año antes de pedir un solo documento?**
 
 Diez pruebas de auditoría en SQL sobre el ciclo de ventas de una distribuidora ficticia: 9 095 facturas, 18 477 líneas de detalle y 265 notas de crédito. El proyecto genera los datos, corre las pruebas sobre toda la población (sin muestreo), cuantifica las excepciones y produce lo que entregaría un equipo de auditoría: un informe, papeles de trabajo en Excel y el detalle de cada excepción.
@@ -139,3 +137,7 @@ Las políticas contra las que se audita (límites de descuento, umbral de aproba
 **Paolo Jove** · Estudiante de 8.º semestre (por iniciar el 9.º) en la **Pontificia Universidad Católica del Perú (PUCP)**. Más proyectos en [portafolio-finanzas](https://github.com/paolojoveal/portafolio-finanzas).
 
 [LinkedIn](https://www.linkedin.com/in/paolo-jove-085647127)
+
+---
+
+<sub>© 2026 Paolo Jove. Todos los derechos reservados.</sub>
